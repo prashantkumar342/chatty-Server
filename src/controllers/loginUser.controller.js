@@ -27,15 +27,15 @@ const loginUser = async (req, res) => {
       { expiresIn: "2d" }
     );
     return res
-      .status(200)
-      .cookie("refToken", refreshToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production", // Secure in production
-        sameSite: process.env.NODE_ENV === "production" ? "None" : "Strict", // Adjust for cross-domain if needed
-        path: "/", // Ensure the cookie is accessible throughout the app
-        maxAge: 24 * 60 * 60 * 1000, // 1 day
-      })
-      .json({ success: "successfully loggedIn" });
+  .status(200)
+  .cookie("refToken", refreshToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production", // Secure in production
+    sameSite: process.env.NODE_ENV === "production" ? "None" : "Strict", // Adjust for cross-domain if needed
+    path: '/', // Ensure the cookie is accessible throughout the app
+    maxAge: 24 * 60 * 60 * 1000, // 1 day
+  })
+  .json({ success: "successfully loggedIn" });
 
   } catch (error) {
     return res.status(500).json({

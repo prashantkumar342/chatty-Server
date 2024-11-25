@@ -46,14 +46,6 @@ const handleMessages = (io, socket, decodedToken) => {
         .populate("sender", "username avatar")
         .populate("receiver", "username avatar");
 
-      io.to(sender._id.toString()).emit("messageChange", {
-        message: latestMessage,
-      });
-
-      io.to(recipient._id.toString()).emit("messageChange", {
-        message: latestMessage,
-      });
-
       // Emit the updated conversation to both users
       const updatedConversation = await conversationModel
         .findById(conversation._id)
@@ -61,16 +53,6 @@ const handleMessages = (io, socket, decodedToken) => {
         .populate("receiverId", "username avatar")
         .populate("lastMessage")
         .exec();
-
-      io.to(sender._id.toString()).emit("conversationChange", {
-        operationType: "update",
-        fullDocument: updatedConversation,
-      });
-
-      io.to(recipient._id.toString()).emit("conversationChange", {
-        operationType: "update",
-        fullDocument: updatedConversation,
-      });
     } catch (error) {
       console.error("Error sending message:", error);
     }
