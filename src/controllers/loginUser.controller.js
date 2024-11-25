@@ -31,10 +31,12 @@ const loginUser = async (req, res) => {
       .cookie("refToken", refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production", // Secure in production
-        sameSite: "Strict", // Adjust as necessary for your use case
-        maxAge: 24 * 60 * 60 * 1000,
+        sameSite: process.env.NODE_ENV === "production" ? "None" : "Strict", // Adjust for cross-domain if needed
+        path: "/", // Ensure the cookie is accessible throughout the app
+        maxAge: 24 * 60 * 60 * 1000, // 1 day
       })
       .json({ success: "successfully loggedIn" });
+
   } catch (error) {
     return res.status(500).json({
       error: "error while logging in username",
