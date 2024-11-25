@@ -5,11 +5,13 @@ import { onlineUsers } from "./socket.js";
 const onConnection = async (io, socket, decodedToken) => {
   const onlineUser = await userModel.findById(decodedToken.userId);
   onlineUsers.set(decodedToken.userId, socket.id);
-
+  
+  
   await userModel.findByIdAndUpdate(decodedToken.userId, {
     socketId: socket.id,
     status: "online",
   });
+
   io.emit("onStatus", { user: onlineUser.username, onlineStatus: "online" });
   console.log(`${onlineUser.username} is online`);
 

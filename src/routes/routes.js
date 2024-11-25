@@ -6,6 +6,7 @@ import fetchUsers from "../controllers/fetchUsers.controller.js";
 import userData from "../controllers/userData.controller.js";
 import fetchConversation from "../controllers/fetchConversation.controller.js";
 import fetchOneUser from "../controllers/fetchOneUser.controller.js";
+import logoutUser from "../controllers/logoutUser.controller.js"
 
 const router = express.Router();
 
@@ -15,9 +16,10 @@ router.get("/fetch/users", authentication, fetchUsers);
 router.post("/fetch/userData", authentication, userData);
 router.get("/fetch/conversations", authentication, fetchConversation);
 router.post("/fetch/recipient", authentication, fetchOneUser);
+router.post("/user/logout", authentication, logoutUser);
 
 router.post("/authenticate/account", authentication, (req, res) => {
-  res.status(200).json({ authentication: "success", userID: req.userId });
+  res.status(200).json({ authentication: "success", user: req.user });
 });
 
 export default router;

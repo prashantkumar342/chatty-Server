@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { User as userModel } from "../models/userModel.js";
 
 const authentication = async (req, res, next) => {
   const refreshToken = req.cookies.refToken;
@@ -9,6 +10,7 @@ const authentication = async (req, res, next) => {
     const decoded = await jwt.verify(refreshToken, process.env.JWT_SECRET_KEY);
     req.userId = decoded.userId;
     req.uName = decoded.username;
+    req.user = await userModel.findById(req.userId);
     next();
   } catch (error) {
     if (error.name === "JsonWebTokenError") {
