@@ -6,7 +6,6 @@ import { User as userModel } from "../models/userModel.js";
 
 const startConversationWatch = (io) => {
   const connection = mongoose.connection;
-  connection.setMaxListeners(20); // Set max listeners if needed
 
   const watchConversation = () => {
     console.log("Setting up conversation watch...");
@@ -55,9 +54,6 @@ const startConversationWatch = (io) => {
       console.error("Conversation Change Stream Error:", error);
       setTimeout(watchConversation, 5000); // Retry after 5 seconds
     });
-
-    // Clean up listeners before setting up new ones
-    conversationChangeStream.removeAllListeners("change");
   };
 
   const watchMessage = () => {
@@ -107,9 +103,6 @@ const startConversationWatch = (io) => {
       console.error("Message Change Stream Error:", error);
       setTimeout(watchMessage, 5000); // Retry after 5 seconds
     });
-
-    // Clean up listeners before setting up new ones
-    messageChangeStream.removeAllListeners("change");
   };
 
   connection.once("open", () => {
